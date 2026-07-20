@@ -1,189 +1,442 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Progres Hafalan Juz 30</title>
-  <style>
-    * { box-sizing: border-box; }
-    body {
-      font-family: sans-serif;
-      background: #f0f4f8;
-      padding: 1rem;
-      margin: 0;
-    }
-    .container {
-      max-width: 700px;
-      margin: auto;
-      background: white;
-      padding: 1.5rem;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-    .header {
-      display: flex;
-      align-items: center;
-      margin-bottom: 1rem;
-    }
-    #homeBtn {
-      border: none;
-      background: none;
-      font-size: 1.5rem;
-      cursor: pointer;
-    }
-    h2 {
-      flex: 1;
-      text-align: center;
-      font-size: 1.5rem;
-      margin: 0;
-    }
-    label { display: block; margin-top: 1rem; font-weight: bold; }
-    select {
-      width: 100%; padding: 0.5rem; margin-top: 0.5rem; font-size: 1rem;
-    }
-    button#refreshBtn {
-      margin-top: -1rem;
-      padding: 0rem 0rem;
-      font-size: 1.2rem;
-      background-color: #2196f3;
-      color: white;
-      border: none;
-      border-radius: 15x;
-      cursor: pointer;
-    }
-    .progress {
-      margin-top: 1rem; text-align: center;
-    }
-    .progress-text { font-weight: bold; margin-bottom: 0.5rem; }
-    .progress-text.red { color: red; }
-    .progress-text.green { color: blue; }
-    .progress-bar {
-      height: 24px;
-      background: #e0e0e0;
-      border-radius: 12px;
-      overflow: hidden;
-      position: relative;
-    }
-    .progress-bar-inner {
-      height: 100%;
-      background: #4caf50;
-      width: 0%;
-      transition: width 0.5s ease;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-weight: bold;
-    }
-    ul {
-      list-style: none;
-      padding: 0;
-      margin-top: 1rem;
-    }
-    li {
-      padding: 0.75rem;
-      border-bottom: 1px solid #ccc;
-      font-size: 1rem;
-    }
-    .m-value {
-      background-color: gold;
-      color: black;
-    }
-    .j-value {
-      background-color: #d4edda;
-      color: #155724;
-    }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Progres Hafalan Juz 30</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Amiri:wght@400;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink: #0F3D32;
+    --ink-deep: #0A2B23;
+    --gold: #C9A227;
+    --gold-light: #E4C55E;
+    --parchment: #FBF4E1;
+    --parchment-deep: #F3E9CC;
+    --maroon: #A33A2E;
+    --amber: #C97C1F;
+    --sage: #3F7D58;
+    --silver: #9AA1A6;
+    --ink-text: #2B241A;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    min-height: 100%;
+  }
+  body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    color: var(--ink-text);
+    background:
+      radial-gradient(circle at 15% 10%, rgba(201,162,39,0.10), transparent 40%),
+      radial-gradient(circle at 85% 90%, rgba(201,162,39,0.10), transparent 40%),
+      linear-gradient(160deg, var(--ink) 0%, var(--ink-deep) 100%);
+    background-attachment: fixed;
+    padding: 2rem 1rem;
+    position: relative;
+    overflow-x: hidden;
+  }
+  /* subtle geometric star pattern overlay */
+  body::before{
+    content:"";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.05;
+    background-image:
+      linear-gradient(30deg, var(--gold) 12%, transparent 12.5%, transparent 87%, var(--gold) 87.5%, var(--gold)),
+      linear-gradient(150deg, var(--gold) 12%, transparent 12.5%, transparent 87%, var(--gold) 87.5%, var(--gold)),
+      linear-gradient(30deg, var(--gold) 12%, transparent 12.5%, transparent 87%, var(--gold) 87.5%, var(--gold)),
+      linear-gradient(150deg, var(--gold) 12%, transparent 12.5%, transparent 87%, var(--gold) 87.5%, var(--gold));
+    background-size: 60px 104px;
+    background-position: 0 0, 0 0, 30px 52px, 30px 52px;
+  }
 
-    /* Leaderboard */
-    .leaderboard {
-      margin-top: 2rem;
-    }
-    .award-grid {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1rem;
-      margin-top: 1rem;
-      justify-content: center;
-    }
-    .award-card {
-      flex: 1 1 calc(50% - 1rem);
-      background-color: #f5f5f5;
-      border-radius: 12px;
-      padding: 1rem;
-      box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-    }
-    .award-card.khatam {
-      background: linear-gradient(135deg, #ffd700, #fff8dc);
-      border: 2px solid #b49235;
-      position: relative;
-      overflow: hidden;
-    }
-    .award-card.perak {
-      background: linear-gradient(135deg, #c0c0c0, #f5f5f5);
-      border: 2px solid #999;
-    }
-    .award-card.khatam::before {
-      content: "";
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: linear-gradient(
-        120deg,
-        rgba(255,255,255,0) 40%,
-        rgba(255,255,255,0.6) 50%,
-        rgba(255,255,255,0) 60%
-      );
-      transform: rotate(25deg);
-      animation: shimmer 2.5s infinite;
-      pointer-events: none;
-    }
-    @keyframes shimmer {
-      0% {
-        transform: translateX(-100%) rotate(25deg);
-      }
-      100% {
-        transform: translateX(100%) rotate(25deg);
-      }
-    }
-    .award-card .trophy {
-      font-size: 2rem;
-    }
-    .award-card .info {
-      flex-grow: 1;
-    }
-    .award-card .info .name {
-      font-size: 1rem;
-      margin-bottom: 0.25rem;
-    }
-    .award-card .info .medals {
-      font-size: 0.9rem;
-      display: flex;
-      gap: 0.5rem;
-      color: #333;
-    }
+  .arabic-eyebrow{
+    text-align: center;
+    color: var(--gold-light);
+    font-family: 'Amiri', serif;
+    font-size: 1.4rem;
+    letter-spacing: 0.02em;
+    margin-bottom: 0.35rem;
+    opacity: 0.85;
+    position: relative;
+    z-index: 1;
+  }
 
-    @media (max-width: 600px) {
-      .container { padding: 1rem; }
-      h2 { font-size: 1.25rem; }
-      select, li, .award-card { font-size: 0.95rem; }
-    }
-  </style>
+  .container {
+    max-width: 700px;
+    margin: 0.25rem auto 2rem;
+    background: var(--parchment);
+    background-image: linear-gradient(180deg, var(--parchment) 0%, var(--parchment-deep) 100%);
+    padding: 2.25rem 1.75rem 1.75rem;
+    border-radius: 18px;
+    position: relative;
+    z-index: 1;
+    box-shadow:
+      0 25px 60px -20px rgba(0,0,0,0.55),
+      0 0 0 1px rgba(201,162,39,0.35);
+    border: 1px solid rgba(201,162,39,0.5);
+  }
+
+  /* illuminated corner ornaments */
+  .corner {
+    position: absolute;
+    width: 46px;
+    height: 46px;
+    opacity: 0.85;
+    z-index: 2;
+  }
+  .corner svg { width: 100%; height: 100%; }
+  .corner.tl { top: 8px; left: 8px; }
+  .corner.tr { top: 8px; right: 8px; transform: scaleX(-1); }
+  .corner.bl { bottom: 8px; left: 8px; transform: scaleY(-1); }
+  .corner.br { bottom: 8px; right: 8px; transform: scale(-1,-1); }
+
+  .header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.25rem;
+    position: relative;
+    z-index: 1;
+  }
+  #homeBtn {
+    border: none;
+    background: var(--ink);
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: transform 0.2s ease, background 0.2s ease;
+  }
+  #homeBtn:hover { transform: translateY(-2px); background: var(--ink-deep); }
+  #homeBtn:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+  #homeBtn svg { width: 22px; height: 22px; }
+
+  h2 {
+    flex: 1;
+    text-align: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 700;
+    font-size: 1.9rem;
+    margin: 0;
+    color: var(--ink);
+    letter-spacing: 0.01em;
+  }
+  .subtitle{
+    text-align: center;
+    font-size: 0.85rem;
+    color: #7a6f57;
+    margin: 0 0 1.5rem;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+  }
+
+  label {
+    display: block;
+    margin-top: 0.5rem;
+    font-weight: 700;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--ink);
+  }
+  .select-wrap{
+    position: relative;
+    margin-top: 0.5rem;
+  }
+  select {
+    width: 100%;
+    padding: 0.75rem 2.5rem 0.75rem 1rem;
+    font-size: 1rem;
+    font-family: inherit;
+    font-weight: 600;
+    color: var(--ink-text);
+    background: #fff;
+    border: 1.5px solid var(--parchment-deep);
+    border-radius: 10px;
+    appearance: none;
+    cursor: pointer;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+  select:hover { border-color: var(--gold); }
+  select:focus-visible {
+    outline: none;
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(201,162,39,0.25);
+  }
+  .select-wrap::after{
+    content: "";
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    width: 9px;
+    height: 9px;
+    border-right: 2px solid var(--ink);
+    border-bottom: 2px solid var(--ink);
+    transform: translateY(-70%) rotate(45deg);
+    pointer-events: none;
+  }
+
+  .status-banner{
+    margin-top: 1rem;
+    padding: 0.65rem 0.9rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    display: none;
+  }
+  .status-banner.show{ display: block; }
+  .status-banner.loading{ background: rgba(201,162,39,0.15); color: #7a5f13; }
+  .status-banner.error{ background: rgba(163,58,46,0.12); color: var(--maroon); }
+
+  .progress {
+    margin-top: 1.25rem;
+    text-align: center;
+  }
+  .progress-text { font-weight: 700; margin-bottom: 0.6rem; font-size: 0.98rem; }
+  .progress-text.red { color: var(--maroon); }
+  .progress-text.green { color: var(--sage); }
+  .progress-bar {
+    height: 26px;
+    background: var(--parchment-deep);
+    border-radius: 13px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.12);
+  }
+  .progress-bar-inner {
+    height: 100%;
+    background: linear-gradient(90deg, var(--maroon), var(--maroon));
+    width: 0%;
+    transition: width 0.8s cubic-bezier(.2,.8,.2,1), background 0.5s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-weight: 700;
+    font-size: 0.85rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .progress-bar-inner.complete::after{
+    content:"";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(120deg, rgba(255,255,255,0) 40%, rgba(255,255,255,0.55) 50%, rgba(255,255,255,0) 60%);
+    animation: shimmer 2.2s infinite;
+  }
+  @keyframes shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 1.25rem 0 0;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid var(--parchment-deep);
+  }
+  li {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--parchment-deep);
+    font-size: 0.95rem;
+    font-weight: 500;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  li:last-child { border-bottom: none; }
+  li::after{
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 0.15rem 0.55rem;
+    border-radius: 999px;
+  }
+  .m-value {
+    background-color: #fff8e1;
+  }
+  .m-value::after { content: "Mutqin"; background: var(--gold); color: #fff; }
+  .j-value {
+    background-color: #eef7f0;
+  }
+  .j-value::after { content: "Jiddan"; background: var(--sage); color: #fff; }
+  li:not(.m-value):not(.j-value)::after { content: "Belum"; background: #eee; color: #999; }
+
+  /* Leaderboard */
+  .leaderboard { margin-top: 2rem; }
+  .leaderboard-head{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    margin-bottom: 0.25rem;
+  }
+  .leaderboard-head h3{
+    margin: 0;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem;
+    color: var(--ink);
+    font-weight: 700;
+  }
+  button#refreshBtn {
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: rgba(63,125,88,0.12);
+    color: var(--sage);
+    font-size: 1.05rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.4s ease, background 0.2s ease;
+  }
+  button#refreshBtn:hover { background: rgba(63,125,88,0.22); }
+  button#refreshBtn:active { transform: rotate(180deg); }
+  button#refreshBtn:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+
+  .leaderboard-sub{
+    text-align: center;
+    font-size: 0.8rem;
+    color: #8a7f66;
+    margin: 0 0 1rem;
+  }
+
+  .award-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.85rem;
+    margin-top: 0.75rem;
+  }
+  .award-card {
+    flex: 1 1 calc(50% - 0.85rem);
+    background: #fff;
+    border-radius: 12px;
+    padding: 0.9rem 1rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    border: 1px solid var(--parchment-deep);
+    position: relative;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .award-card:hover{ transform: translateY(-2px); box-shadow: 0 8px 18px rgba(0,0,0,0.12); }
+  .award-card .rank{
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 700;
+    font-size: 1rem;
+    color: #b3a988;
+    width: 1.4rem;
+    text-align: center;
+    flex-shrink: 0;
+  }
+  .award-card.khatam {
+    background: linear-gradient(135deg, #fff8e1, #fffdf5);
+    border: 1.5px solid var(--gold);
+    overflow: hidden;
+  }
+  .award-card.perak {
+    background: linear-gradient(135deg, #f4f5f6, #fdfdfd);
+    border: 1.5px solid var(--silver);
+  }
+  .award-card.khatam::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(120deg, rgba(255,255,255,0) 40%, rgba(255,255,255,0.6) 50%, rgba(255,255,255,0) 60%);
+    transform: rotate(25deg);
+    animation: shimmer 2.6s infinite;
+    pointer-events: none;
+  }
+  .award-card .seal {
+    font-size: 1.6rem;
+    flex-shrink: 0;
+    filter: drop-shadow(0 1px 1px rgba(0,0,0,0.15));
+  }
+  .award-card .info { flex-grow: 1; min-width: 0; }
+  .award-card .info .name {
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin-bottom: 0.2rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .award-card .info .medals {
+    font-size: 0.82rem;
+    display: flex;
+    gap: 0.6rem;
+    color: #4a4335;
+    font-weight: 600;
+  }
+
+  .empty-state{
+    text-align: center;
+    padding: 1.5rem 1rem;
+    color: #9a8f74;
+    font-size: 0.9rem;
+    font-style: italic;
+  }
+
+  @media (max-width: 600px) {
+    .container { padding: 1.5rem 1.1rem 1.25rem; }
+    h2 { font-size: 1.5rem; }
+    .award-card { flex: 1 1 100%; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .progress-bar-inner.complete::after,
+    .award-card.khatam::before { animation: none; }
+    .award-card, #homeBtn, button#refreshBtn, select { transition: none; }
+  }
+</style>
 </head>
 <body>
+
+  <div class="arabic-eyebrow">جُزْءُ عَمَّ</div>
+
   <div class="container">
+    <div class="corner tl"><svg viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 2 Q2 24 24 24 Q2 24 2 44" stroke="#C9A227" stroke-width="1.5"/><circle cx="2" cy="2" r="3" fill="#C9A227"/><path d="M2 2 Q24 2 24 24" stroke="#C9A227" stroke-width="1.5"/></svg></div>
+    <div class="corner tr"><svg viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 2 Q2 24 24 24 Q2 24 2 44" stroke="#C9A227" stroke-width="1.5"/><circle cx="2" cy="2" r="3" fill="#C9A227"/><path d="M2 2 Q24 2 24 24" stroke="#C9A227" stroke-width="1.5"/></svg></div>
+    <div class="corner bl"><svg viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 2 Q2 24 24 24 Q2 24 2 44" stroke="#C9A227" stroke-width="1.5"/><circle cx="2" cy="2" r="3" fill="#C9A227"/><path d="M2 2 Q24 2 24 24" stroke="#C9A227" stroke-width="1.5"/></svg></div>
+    <div class="corner br"><svg viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 2 Q2 24 24 24 Q2 24 2 44" stroke="#C9A227" stroke-width="1.5"/><circle cx="2" cy="2" r="3" fill="#C9A227"/><path d="M2 2 Q24 2 24 24" stroke="#C9A227" stroke-width="1.5"/></svg></div>
+
     <div class="header">
-      <button id="homeBtn"><img src="masi.svg" alt="Home" style="height: 2rem; vertical-align: middle;  margin-right: 0.5rem;" /></button>
+      <button id="homeBtn" aria-label="Kembali ke ringkasan">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M4 21V10.5L12 4L20 10.5V21H15V14H9V21H4Z" stroke="#E4C55E" stroke-width="1.6" stroke-linejoin="round"/>
+          <circle cx="12" cy="6.5" r="1.3" fill="#E4C55E"/>
+        </svg>
+      </button>
       <h2>Ujian Hafalan Juz Ke-30</h2>
+      <div style="width:42px"></div>
+    </div>
+    <p class="subtitle">MA Syarikat Islam Parakansalak</p>
+
+    <label for="student">Pilih Nama</label>
+    <div class="select-wrap">
+      <select id="student"><option value="">-- Memuat data... --</option></select>
     </div>
 
-    <label for="student">Pilih Nama:</label>
-    <select id="student"><option value="">-- Memuat data... --</option></select>
-   
+    <div id="statusBanner" class="status-banner"></div>
 
     <div id="progress" class="progress">
       <div class="progress-text" id="progressText"></div>
@@ -193,152 +446,208 @@
     </div>
 
     <div class="leaderboard" id="leaderboardSection">
-    <div style="display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
-      <h3 style="margin: 0;">Progres Hafalan</h3>
-      <button id="refreshBtn" style="background: none; color: green;">♻</button>
-    </div>
+      <div class="leaderboard-head">
+        <h3>Progres Hafalan</h3>
+        <button id="refreshBtn" aria-label="Muat ulang data">&#8635;</button>
+      </div>
+      <p class="leaderboard-sub">Diurutkan dari yang paling banyak menyetor hafalan</p>
       <div id="leaderboardList"></div>
     </div>
 
     <ul id="surahList"></ul>
   </div>
 
-  <script>
-    const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTCWIVJ86dqtkFWkFsgNyULlNqnmXw8__kg1UNKfqepUY4JfEHQEUoU6GlP1uAhKO8oJY3pb52n2R6a/pub?output=csv";
+<script>
+  const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTCWIVJ86dqtkFWkFsgNyULlNqnmXw8__kg1UNKfqepUY4JfEHQEUoU6GlP1uAhKO8oJY3pb52n2R6a/pub?gid=0&single=true&output=csv";
 
-    let students = [];
-    let surahHeaders = [];
+  let students = [];
+  let surahHeaders = [];
 
-    function fetchData() {
-      fetch(SHEET_URL)
-        .then(res => res.text())
-        .then(csv => {
-          const rows = csv.trim().split("\n").map(row => row.split(","));
-          surahHeaders = rows[0].slice(1);
-          students = rows.slice(1).map(row => {
-            const hafalan = row.slice(1).map(val => val.trim());
+  // Simple CSV line parser that respects quoted fields containing commas.
+  function parseCsvLine(line) {
+    const result = [];
+    let current = "";
+    let inQuotes = false;
+    for (let i = 0; i < line.length; i++) {
+      const char = line[i];
+      if (char === '"') {
+        if (inQuotes && line[i + 1] === '"') { current += '"'; i++; }
+        else { inQuotes = !inQuotes; }
+      } else if (char === "," && !inQuotes) {
+        result.push(current);
+        current = "";
+      } else {
+        current += char;
+      }
+    }
+    result.push(current);
+    return result.map(v => v.trim());
+  }
+
+  function setStatus(type, message) {
+    const banner = document.getElementById("statusBanner");
+    banner.className = "status-banner show " + type;
+    banner.textContent = message;
+  }
+  function clearStatus() {
+    const banner = document.getElementById("statusBanner");
+    banner.className = "status-banner";
+    banner.textContent = "";
+  }
+
+  function fetchData() {
+    setStatus("loading", "Memuat data hafalan...");
+    fetch(SHEET_URL)
+      .then(res => {
+        if (!res.ok) throw new Error("Gagal mengambil data (status " + res.status + ")");
+        return res.text();
+      })
+      .then(csv => {
+        const rows = csv.trim().split("\n").map(parseCsvLine);
+        surahHeaders = rows[0].slice(1);
+        students = rows.slice(1)
+          .filter(row => row[0])
+          .map(row => {
+            const hafalan = row.slice(1).map(val => (val || "").trim());
             const M = hafalan.filter(v => v === "M").length;
             const J = hafalan.filter(v => v === "J").length;
             const total = hafalan.length;
-            const isKhatam = (M + J === total);
+            const isKhatam = total > 0 && (M + J === total);
             return { name: row[0], hafalan, M, J, isKhatam };
           });
 
-          renderSelect();
-          renderLeaderboard();
-        });
-    }
-
-    function renderSelect() {
-      const select = document.getElementById("student");
-      select.innerHTML = `<option value="">-- Pilih --</option>` +
-        students.map((s, i) => `<option value="${i}">${s.name}</option>`).join("");
-    }
-
-    function renderLeaderboard() {
-      const leaderboard = students
-        .filter(s => s.M + s.J > 0)
-        .sort((a, b) => {
-          if (b.isKhatam !== a.isKhatam) return b.isKhatam - a.isKhatam;
-          return b.M - a.M;
-        });
-
-      const leaderboardList = document.getElementById("leaderboardList");
-      leaderboardList.innerHTML = `
-        <div class="award-grid">
-          ${leaderboard.map(s => {
-            const isPerak = s.isKhatam && s.J > s.M;
-            const khatamClass = s.isKhatam ? (isPerak ? 'khatam perak' : 'khatam') : '';
-            return `
-              <div class="award-card ${khatamClass}">
-                <div class="trophy">${s.isKhatam ? '🏆' : ''}</div>
-                <div class="info">
-                  <div class="name">${s.name}</div>
-                    <div class="medals">
-                    🥇 ${s.M === 0 ? '-' : s.M} 🥈 ${s.J === 0 ? '-' : s.J}
-                    </div>
-                </div>
-              </div>`;
-          }).join('')}
-        </div>`;
-    }
-
-    document.getElementById("student").addEventListener("change", function () {
-      const idx = this.value;
-      const list = document.getElementById("surahList");
-      const progressText = document.getElementById("progressText");
-      const progressBar = document.getElementById("progressBar");
-      const leaderboardSection = document.getElementById("leaderboardSection");
-
-      list.innerHTML = "";
-      progressText.textContent = "";
-      progressText.classList.remove("red", "green");
-      progressBar.style.width = "0%";
-      progressBar.textContent = "";
-      progressBar.style.backgroundColor = "#e0e0e0";
-      leaderboardSection.style.display = idx ? "none" : "block";
-
-      if (!idx) return;
-
-      const siswa = students[idx];
-      const total = siswa.hafalan.length;
-      const selesai = siswa.hafalan.filter(v => v === "M" || v === "J").length;
-      const sisa = total - selesai;
-      const persen = Math.round((selesai / total) * 100);
-
-      if (selesai === 0) {
-        progressText.textContent = `Belum Setor Hafalan`;
-        progressText.classList.add("red");
-        progressBar.style.backgroundColor = '#f44336';
-      } else if (persen === 100) {
-        progressText.textContent = `Selamat, kamu sudah menyelesaikan hafalan Al-Quran Juz Ke-30`;
-        progressText.classList.add("green");
-        progressBar.style.backgroundColor = '#4caf50';
-      } else {
-        progressText.textContent = `Sudah setor hafalan ${selesai} Surat, sisa ${sisa} Surat lagi.`;
-        if (persen > 70) {
-          progressBar.style.backgroundColor = '#4caf50';
-        } else if (persen >= 50) {
-          progressBar.style.backgroundColor = '#ff9800';
-        } else {
-          progressBar.style.backgroundColor = '#f44336';
-        }
-      }
-
-      progressBar.style.width = `${persen}%`;
-      progressBar.textContent = `${persen}%`;
-
-      surahHeaders.forEach((surah, i) => {
-        const li = document.createElement("li");
-        li.textContent = surah;
-        const nilai = siswa.hafalan[i];
-        if (nilai === "M") {
-          li.classList.add("m-value");
-          li.title = "Mutqin";
-        } else if (nilai === "J") {
-          li.classList.add("j-value");
-          li.title = "Jiddan";
-        } else {
-          li.textContent += "-";
-          li.title = "Belum Setor Hafalan";
-        }
-        list.appendChild(li);
+        clearStatus();
+        renderSelect();
+        renderLeaderboard();
+      })
+      .catch(err => {
+        setStatus("error", "Data tidak dapat dimuat. Periksa koneksi internet, lalu tekan tombol muat ulang.");
+        console.error(err);
       });
-    });
+  }
 
-    document.getElementById("homeBtn").addEventListener("click", () => {
-      document.getElementById("student").value = "";
-      document.getElementById("student").dispatchEvent(new Event("change"));
-    });
+  function renderSelect() {
+    const select = document.getElementById("student");
+    select.innerHTML = `<option value="">-- Pilih --</option>` +
+      students.map((s, i) => `<option value="${i}">${s.name}</option>`).join("");
+  }
 
-    document.getElementById("refreshBtn").addEventListener("click", () => {
-      fetchData();
-      document.getElementById("student").value = "";
-      document.getElementById("student").dispatchEvent(new Event("change"));
-    });
+  function renderLeaderboard() {
+    const leaderboard = students
+      .filter(s => s.M + s.J > 0)
+      .sort((a, b) => {
+        if (b.isKhatam !== a.isKhatam) return b.isKhatam - a.isKhatam;
+        return (b.M + b.J) - (a.M + a.J) || b.M - a.M;
+      });
 
-    // Initial load
+    const leaderboardList = document.getElementById("leaderboardList");
+
+    if (leaderboard.length === 0) {
+      leaderboardList.innerHTML = `<div class="empty-state">Belum ada santri yang menyetor hafalan.</div>`;
+      return;
+    }
+
+    leaderboardList.innerHTML = `
+      <div class="award-grid">
+        ${leaderboard.map((s, i) => {
+          const isPerak = s.isKhatam && s.J > s.M;
+          const khatamClass = s.isKhatam ? (isPerak ? 'khatam perak' : 'khatam') : '';
+          const seal = s.isKhatam ? (isPerak ? '🥈' : '🏆') : '📖';
+          return `
+            <div class="award-card ${khatamClass}">
+              <div class="rank">${i + 1}</div>
+              <div class="seal">${seal}</div>
+              <div class="info">
+                <div class="name">${s.name}</div>
+                <div class="medals">
+                  <span>🥇 ${s.M === 0 ? '-' : s.M}</span>
+                  <span>🥈 ${s.J === 0 ? '-' : s.J}</span>
+                </div>
+              </div>
+            </div>`;
+        }).join('')}
+      </div>`;
+  }
+
+  document.getElementById("student").addEventListener("change", function () {
+    const idx = this.value;
+    const list = document.getElementById("surahList");
+    const progressText = document.getElementById("progressText");
+    const progressBar = document.getElementById("progressBar");
+    const leaderboardSection = document.getElementById("leaderboardSection");
+
+    list.innerHTML = "";
+    progressText.textContent = "";
+    progressText.classList.remove("red", "green");
+    progressBar.style.width = "0%";
+    progressBar.textContent = "";
+    progressBar.classList.remove("complete");
+    progressBar.style.background = "var(--parchment-deep)";
+    leaderboardSection.style.display = idx ? "none" : "block";
+
+    if (!idx) return;
+
+    const siswa = students[idx];
+    const total = siswa.hafalan.length;
+    const selesai = siswa.hafalan.filter(v => v === "M" || v === "J").length;
+    const sisa = total - selesai;
+    const persen = total > 0 ? Math.round((selesai / total) * 100) : 0;
+
+    if (selesai === 0) {
+      progressText.textContent = `Belum setor hafalan`;
+      progressText.classList.add("red");
+      progressBar.style.background = 'var(--maroon)';
+    } else if (persen === 100) {
+      progressText.textContent = `Selamat, kamu sudah menyelesaikan hafalan Al-Qur'an Juz Ke-30`;
+      progressText.classList.add("green");
+      progressBar.style.background = 'var(--sage)';
+      progressBar.classList.add("complete");
+    } else {
+      progressText.textContent = `Sudah setor hafalan ${selesai} surat, sisa ${sisa} surat lagi.`;
+      if (persen > 70) {
+        progressBar.style.background = 'var(--sage)';
+      } else if (persen >= 50) {
+        progressBar.style.background = 'var(--amber)';
+      } else {
+        progressBar.style.background = 'var(--maroon)';
+      }
+    }
+
+    progressBar.style.width = `${persen}%`;
+    progressBar.textContent = `${persen}%`;
+
+    surahHeaders.forEach((surah, i) => {
+      const li = document.createElement("li");
+      const nameSpan = document.createElement("span");
+      nameSpan.textContent = surah;
+      li.appendChild(nameSpan);
+      const nilai = siswa.hafalan[i];
+      if (nilai === "M") {
+        li.classList.add("m-value");
+        li.title = "Mutqin";
+      } else if (nilai === "J") {
+        li.classList.add("j-value");
+        li.title = "Jiddan";
+      } else {
+        li.title = "Belum Setor Hafalan";
+      }
+      list.appendChild(li);
+    });
+  });
+
+  document.getElementById("homeBtn").addEventListener("click", () => {
+    document.getElementById("student").value = "";
+    document.getElementById("student").dispatchEvent(new Event("change"));
+  });
+
+  document.getElementById("refreshBtn").addEventListener("click", () => {
     fetchData();
-  </script>
+    document.getElementById("student").value = "";
+    document.getElementById("student").dispatchEvent(new Event("change"));
+  });
+
+  // Initial load
+  fetchData();
+</script>
 </body>
 </html>
